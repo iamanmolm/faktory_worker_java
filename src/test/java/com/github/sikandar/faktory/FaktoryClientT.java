@@ -22,6 +22,7 @@ public class FaktoryClientT {
     @Test
     public void initializeClientWithoutUriButWithEnvVars() {
         environmentVariables.set("FAKTORY_URL", "tcp://192.168.0.2:7419");
+        environmentVariables.set("FAKTORY_PASSWORD", "password2Faktory");
         FaktoryClient anotherClient = new FaktoryClient();
 
         Assert.assertEquals("tcp://192.168.0.2:7419", anotherClient.url);
@@ -33,6 +34,11 @@ public class FaktoryClientT {
         Assert.assertEquals("tcp://192.168.0.1:7419", client.url);
     }
 
+    @Test
+    public void initializeClientWithACustomUriAndCustomPassword() {
+        FaktoryClient client = new FaktoryClient("tcp://192.168.0.1:7419", "password2Faktory");
+        Assert.assertEquals("tcp://192.168.0.1:7419", client.url);
+    }
 
     @Test(expected = FaktoryException.class)
     public void pushFaktoryJobWithoutConnection() throws Exception {

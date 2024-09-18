@@ -19,15 +19,18 @@ public class FaktoryClient {
     private final FaktoryConnection connection;
     public static String url = "tcp://localhost:7419";
 
-    public FaktoryClient(final String urlParam) {
+    public FaktoryClient(final String urlParam, final String password) {
         url = urlParam == null ? url : urlParam;
-        connection = new FaktoryConnection(url);
+        connection = new FaktoryConnection(url, password);
+    }
+
+    public FaktoryClient(final String urlParam) {
+        this(urlParam, null);
     }
 
     public FaktoryClient() {
-        this(System.getenv("FAKTORY_URL"));
+        this(System.getenv("FAKTORY_URL"), System.getenv("FAKTORY_PASSWORD"));
     }
-
 
     public void push(final FaktoryJob job) throws IOException {
         final String payload = new Gson().toJson(job);
@@ -35,6 +38,4 @@ public class FaktoryClient {
         connection.send("PUSH " + payload);
         connection.close();
     }
-
-
 }
